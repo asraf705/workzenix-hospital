@@ -20,7 +20,8 @@ class LoginController extends Controller
         $this->middleware('guest:admin')->except('logout');
     }
 
-    protected function guard(){
+    protected function guard()
+    {
         return Auth::guard('admin');
     }
 
@@ -31,18 +32,20 @@ class LoginController extends Controller
 
     public function adminLogin(Request $request)
     {
-        $this->validate($request, [
-            'email'   => 'required|email',
-            'password' => 'required|min:6'
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required|min:6',
         ]);
 
-        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-            return redirect()->route('admin.dashboard')->with('success','You are Logged in sucessfully.');
+        $loginType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+
+        if (Auth::guard('admin')->attempt([$loginType => $request->username, 'password' => $request->password], $request->filled('remember'))) {
+            return redirect()->route('admin.dashboard')->with('success', 'You are logged in successfully.');
         }
-        else {
-            return back()->with('error','Whoops! invalid email and password.');
-        }
+
+        return back()->with('error', 'Whoops! Invalid credentials.');
     }
+
 
     public function logout(Request $request)
     {

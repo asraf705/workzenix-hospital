@@ -10,15 +10,20 @@ class Admin extends Authenticatable
     protected $guard = 'admin';
 
     protected $fillable = [
+        'code',
         'name',
         'email',
+        'phone',
         'password',
+        'role',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
+    
 
     protected function casts(): array
     {
