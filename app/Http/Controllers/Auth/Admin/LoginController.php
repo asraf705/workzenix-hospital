@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Admin;
 
 class LoginController extends Controller
 {
@@ -44,6 +46,56 @@ class LoginController extends Controller
         }
 
         return back()->with('error', 'Whoops! Invalid credentials.');
+    }
+
+    public function addAdmin(Request $request)
+    {
+        return view('admin.auth.register');
+    }
+
+    public function createAdmin(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'string|email|max:255|unique:admins',
+            'phone' => 'string|max:15|unique:admins',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $admin = new Admin();
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        $admin->phone = $request->phone;
+        $admin->password = bcrypt($request->password);
+        $admin->role = $request->role;;
+        $admin->save();
+
+        return redirect()->back()->with('success', 'Admin registered successfully. Please login.');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'email' => 'required|email',
+            'old_password' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $admin = Auth::guard('admin')->user();
+
+        if (!Hash::check($request->old_password, $admin->password)) {
+            return back()->with('error', 'Old password does not match.');
+        }
+
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        $admin->phone = $request->phone;
+        $admin->password = bcrypt($request->password);
+        $admin->save();
+
+        return redirect()->back()->with('success', 'Password updated successfully.');
     }
 
 
