@@ -11,4 +11,9 @@ class HomeController extends Controller
     {
         return view('website.pages.home.index');
     }
+
+    public function about()
+    {
+        return view('website.pages.about.index');
+    }
 }
