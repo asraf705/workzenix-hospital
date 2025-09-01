@@ -13,7 +13,7 @@ class AdminTableSeeder extends Seeder
         // Create a default admin user
         Admin::create([
             'name' => 'Admin',
-            'email' => 'admin@tipinfotrove.com',
+            'email' => 'asrafuzzaman',
             'password' => Hash::make('12345678'), // Use a secure password
         ]);
     }

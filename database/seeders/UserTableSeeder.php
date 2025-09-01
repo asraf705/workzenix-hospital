@@ -13,7 +13,7 @@ class UserTableSeeder extends Seeder
         // Create a default regular user
         User::create([
             'name' => 'User',
-            'email' => 'user@tipinfotrove.com',
+            'email' => 'user@gmail.com',
             'password' => Hash::make('12345678'), // Use a secure password
         ]);
     }

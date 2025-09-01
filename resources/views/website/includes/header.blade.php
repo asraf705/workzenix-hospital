@@ -15,7 +15,7 @@
                         <li class="nav-item px-2"><a class="nav-link" href="#findUs">Help </a></li>
                         <li class="nav-item px-2"><a class="nav-link" href="#findUs">Contact</a></li>
                     </ul><a class="btn btn-sm btn-outline-primary rounded-pill order-1 order-lg-0 ms-lg-4"
-                        href="#!">Sign In</a>
+                        href="{{ route('login') }}">Sign In</a>
                 </div>
             </div>
         </nav>
